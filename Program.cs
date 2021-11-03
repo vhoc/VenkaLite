@@ -20,14 +20,14 @@ namespace VenkaLite
                     Environment.Exit(0);
                 }
 
-                string queries = RemoteQueries.Get( Settings.Value( "Sucursal" ), Security.DecryptString("origin ladder as", Settings.Value( "AuthKey" ) ) );
+                string queries = RemoteQueries.Get( Settings.Value( "Sucursal" ), Security.DecryptString("1234567890123456", Settings.Value( "AuthKey" ) ) );
 
                 if ( String.IsNullOrEmpty( queries ) )
                 {
                     Environment.Exit(0);
                 }
                 
-                RemoteData.Put( LocalData.Get( queries ), Security.DecryptString("origin ladder as", Settings.Value( "AuthKey" ) ) );
+                RemoteData.Put( LocalData.Get( queries ), Security.DecryptString("1234567890123456", Settings.Value( "AuthKey" ) ) );
             }
         }
     }

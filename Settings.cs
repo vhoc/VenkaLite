@@ -88,7 +88,7 @@ namespace VenkaLite
                     settings.DbEngine = @Console.ReadLine();
 
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa el API Key:" );
-                    settings.AuthKey = Security.EncryptString( "origin ladder as", @Console.ReadLine() );
+                    settings.AuthKey = Security.EncryptString( "1234567890123456", @Console.ReadLine() );
 
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa la Instancia de SQL SERVER:" );
                     settings.SqlServerInstance = Console.ReadLine();
@@ -97,10 +97,10 @@ namespace VenkaLite
                     settings.Database = @Console.ReadLine();
 
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa el Nombre de Usuario (Ejemplo: sa):" );
-                    settings.User = Security.EncryptString( "origin ladder as", @Console.ReadLine() );
+                    settings.User = Security.EncryptString( "1234567890123456", @Console.ReadLine() );
 
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa la Contraseña:" );
-                    settings.Password = Security.EncryptString( "origin ladder as", @Console.ReadLine() );
+                    settings.Password = Security.EncryptString( "1234567890123456", @Console.ReadLine() );
 
                     settings.ConnectTimeout = "180";
                     settings.ConnectRetryCount = "255";

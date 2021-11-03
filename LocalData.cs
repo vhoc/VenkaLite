@@ -18,8 +18,8 @@ namespace VenkaLite
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
             builder.DataSource              = Settings.Value( "SqlServerInstance" );
-            builder.UserID                  = Security.DecryptString("origin ladder as", Settings.Value( "User" ) );
-            builder.Password                = Security.DecryptString( "origin ladder as", Settings.Value( "Password" ) );
+            builder.UserID                  = Security.DecryptString("1234567890123456", Settings.Value( "User" ) );
+            builder.Password                = Security.DecryptString( "1234567890123456", Settings.Value( "Password" ) );
             builder.InitialCatalog          = Settings.Value( "Database" );
             builder.IntegratedSecurity      = Convert.ToBoolean( Settings.Value( "IntegratedSecurity" ) );
             builder.Encrypt                 = Convert.ToBoolean( Settings.Value( "Encrypt" ) );

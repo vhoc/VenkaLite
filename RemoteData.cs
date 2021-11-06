@@ -1,12 +1,18 @@
 using System;
 using System.Net;
-using System.Net.Http;
 
 namespace VenkaLite
 {
     class RemoteData
     {
 
+        /*
+        *  RemoteData.Put( localData, authKey )
+        *  return void
+        *
+        *  Sends the data from the local SoftRestaurant database to the Venka API
+        *  for its use and visualization in the Venka App.
+        */
         public static void Put( dynamic localData, string authKey )
         {
 

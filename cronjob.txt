@@ -1,0 +1,7 @@
+# Require que el paquete 'util-linux' esté instalado para el uso de 'flock'
+# 'flock' se usa para que no se creen múltiples instancias de VenkaLite
+#
+# Sintaxis:
+# MIN     HORA      DIA(mes)      MES      DIA(semana)       COMANDO(S)
+#
+*/1    *       *       *       *       /usr/bin/flock -n /tmp/fcj.lockfile ~/VenkaLite

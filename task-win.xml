@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Date>2021-11-03T13:11:27.924-07:00</Date>
-    <Author>MER01-SERVER\admin</Author>
+    <Date>2021-11-04T09:34:10.276-07:00</Date>
+    <Author>VENKA\venka</Author>
     <Description>VenkaLite - Requerido para el funcionamiento de la App Venka</Description>
   </RegistrationInfo>
   <Triggers>
     <BootTrigger>
       <Repetition>
-        <Interval>PT2M</Interval>
+        <Interval>PT1M</Interval>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
       <Enabled>true</Enabled>
     </BootTrigger>
-    <CalendarTrigger>
+    <TimeTrigger>
       <Repetition>
-        <Interval>PT2M</Interval>
+        <Interval>PT1M</Interval>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
-      <StartBoundary>2021-11-03T06:00:00</StartBoundary>
+      <StartBoundary>2021-11-04T08:00:00</StartBoundary>
       <Enabled>true</Enabled>
-      <ScheduleByDay>
-        <DaysInterval>1</DaysInterval>
-      </ScheduleByDay>
-    </CalendarTrigger>
+    </TimeTrigger>
   </Triggers>
   <Principals>
     <Principal id="Author">
@@ -34,8 +31,8 @@
   <Settings>
     <MultipleInstancesPolicy>StopExisting</MultipleInstancesPolicy>
     <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
-    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
-    <AllowHardTerminate>false</AllowHardTerminate>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
     <StartWhenAvailable>true</StartWhenAvailable>
     <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
     <IdleSettings>
@@ -56,8 +53,8 @@
   </Settings>
   <Actions Context="Author">
     <Exec>
-      <Command>C:\venka\Sync\VenkaLite.exe</Command>
-      <Arguments>C:\venka\Sync\scheduler.log</Arguments>
+      <Command>C:\Venka\Sync\VenkaLite.exe</Command>
+      <Arguments>C:\Venka\Sync\scheduler.log</Arguments>
     </Exec>
   </Actions>
 </Task>

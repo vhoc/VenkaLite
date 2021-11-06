@@ -13,14 +13,17 @@ namespace VenkaLite
         public string query { get; set; }
 
         /*
-        *   
+        * RemoteQueries.Get( dbengine, authKey )
+        * return string
+        *
+        * Get the queries from the Venka API.
         */
         public static string Get ( string dbengine, string authKey )
         {
             Console.WriteLine( "[" + DateTime.Now + "] Obteniendo biblioteca de datos... " );
 
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add( new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue( "application/json" ) );            
+            client.DefaultRequestHeaders.Accept.Add( new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue( "application/json" ) );
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue( "Bearer", authKey );
 
             HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Get, "https://venka.app/api/queries/" + dbengine );

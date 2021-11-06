@@ -5,7 +5,7 @@ Made by:
 Victor H. Olvera.  
 Venka Development Team.
 ---------------------------
-First draft completed on May 11st, 2021.
+First draft completed on May 11st, 2021.  
 Rewritten: November 1st, 2021
 ---------------------------
 

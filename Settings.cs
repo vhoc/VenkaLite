@@ -23,13 +23,21 @@ namespace VenkaLite
         public string IntegratedSecurity { get; set; }
         public string Encrypt { get; set; }
 
+        /*
+        * Settings.Create()
+        * return void
+        *
+        * Creates the configuration file for the application.
+        */
         public static void Create()
         {
             
-            // Set configuration file path
+            // Set configuration file path and file name.
             string configPath = "";
             string vkconfig = @"vkconfig";
 
+            // Validates the operating system in which the application is running and set the configuration file path accordingly.
+            // MacOS is not yet supported and will cause the application's termination at this point.
             if ( OperatingSystem.IsWindows() ) { configPath = @Environment.GetEnvironmentVariable( "SystemRoot" ) + @"\System32\drivers\etc\"; }
             if ( OperatingSystem.IsLinux() ) { configPath = @"/etc/venka/"; }
             if ( OperatingSystem.IsMacOs() )
@@ -41,7 +49,8 @@ namespace VenkaLite
 
             string configFile = @configPath + @vkconfig;
 
-            // First, checks if directory exists
+            // Validate the configuration file directory's existence.
+            // Create the directory if the validation fails.
             if( !Directory.Exists( @configPath ) )
             {
                 Console.WriteLine( "[" + DateTime.Now + "] El directorio no existe, intentando crear..." );
@@ -60,7 +69,8 @@ namespace VenkaLite
             
             }
 
-            // Checks if the config file exists, if not, create it.
+            // Validate the configuration file's existence.
+            // Create the file if the validation fails.
             if ( File.Exists( @configFile ) )
             {
                 File.Delete( @configFile );
@@ -78,7 +88,7 @@ namespace VenkaLite
                         fs.Write( info, 0, info.Length );
                     }
 
-                    // Create a class Settings instance to fill in with the settings paratemers afterwards.
+                    // Ask for input for the configuration parameters and store them in a new instance of Settings.
                     Settings settings = new Settings();
                     
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa el ID de la Sucursal:" );
@@ -102,13 +112,15 @@ namespace VenkaLite
                     Console.WriteLine( "[" + DateTime.Now + "] Ingresa la Contraseña:" );
                     settings.Password = Security.EncryptString( "1234567890123456", @Console.ReadLine() );
 
+                    // Default settings that can be changed directly in the configuration file afterwards.
+                    // These are proven to work on Windows and on Linux using the venka-nanoserver image.
                     settings.ConnectTimeout = "180";
                     settings.ConnectRetryCount = "255";
                     settings.ConnectRetryInterval = "10";
                     settings.IntegratedSecurity = "false";
                     settings.Encrypt = "false";
 
-                    // Append the jsonSettings string into the configuration file.
+                    // Write the settings into the configuration file.
                     using( StreamWriter w = File.AppendText( @configFile ) )
                     {
                         w.WriteLine( JsonConvert.SerializeObject( settings, Formatting.Indented ) );
@@ -126,14 +138,23 @@ namespace VenkaLite
 
         }
 
+        /*
+        * Settings.Value( string key )
+        * return string
+        *
+        * Fetch and return a single settings value specified in the key parameter.
+        */
         public static string Value( string key )
         {
             string configPath = "";
             string fileName = @"vkconfig";
 
+            // Validate the configuration file's existence.
             if ( OperatingSystem.IsWindows() ) { configPath = @Environment.GetEnvironmentVariable( "SystemRoot" ) + @"\System32\drivers\etc\"; }
             if ( OperatingSystem.IsLinux() ) { configPath = @"/etc/venka/"; }
 
+            // Read the file into a Dictionary dConfig[ key ]
+            // and return only the specified value.
             try
             {
                 string jConfig = File.ReadAllText( configPath + fileName );
@@ -149,6 +170,12 @@ namespace VenkaLite
             
         }
 
+        /*
+        * Settings.Check()
+        * return bool
+        *
+        * Validates the configuration file's existence.
+        */
         public static bool Check()
         {
             string configPath = "";

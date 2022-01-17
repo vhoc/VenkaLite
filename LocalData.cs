@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -101,6 +102,86 @@ namespace VenkaLite
             Console.WriteLine( "[" + DateTime.Now + "] Datos recopilados." );
 
             return queryData;
+        }
+
+        /**
+        *   SendOpeningHours
+        */
+        public static void SetOpeningHours()
+        {
+            String horaApertura = "";
+            String horaCierre = "";
+            String uri              = "https://venka.app/api/opening_hours/";
+            String response         = string.Empty;
+
+            // Prepare the SQL connection.            
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+
+            builder.DataSource              = Settings.Value( "SqlServerInstance" );
+            builder.UserID                  = Security.DecryptString("1234567890123456", Settings.Value( "User" ) );
+            builder.Password                = Security.DecryptString( "1234567890123456", Settings.Value( "Password" ) );
+            builder.InitialCatalog          = Settings.Value( "Database" );
+            builder.IntegratedSecurity      = Convert.ToBoolean( Settings.Value( "IntegratedSecurity" ) );
+            builder.Encrypt                 = Convert.ToBoolean( Settings.Value( "Encrypt" ) );
+            builder.ConnectRetryCount       = Convert.ToInt32( Settings.Value( "ConnectRetryCount" ) );
+            builder.ConnectRetryInterval    = Convert.ToInt32( Settings.Value( "ConnectRetryInterval" ) );
+            builder.ConnectTimeout          = Convert.ToInt32( Settings.Value( "ConnectTimeout" ) );
+
+            using( SqlConnection connection = new SqlConnection( builder.ConnectionString ) )
+            {
+                try {
+                    Console.WriteLine( "[" + DateTime.Now + "] Abriendo conexión a la base de datos" );
+                    connection.Open();
+                    Console.WriteLine( "[" + DateTime.Now + "] Conexión abierta" );
+                } catch( Exception ex ) {
+                    Console.WriteLine( "[" + DateTime.Now + "] ERROR: " + ex.Message ); Environment.Exit(0);
+                }
+
+                using( SqlCommand cmd = new SqlCommand( "SELECT TOP 1 cortezinicio as hora_apertura FROM configuracion", connection ) )
+                {
+                    Console.WriteLine( "[" + DateTime.Now + "] Consultando hora de apertura" );
+                    horaApertura = Convert.ToString( cmd.ExecuteScalar() );
+                    Console.WriteLine( "[" + DateTime.Now + "] Hora de apertura obtenida: " + horaApertura );
+                    if( String.IsNullOrEmpty( horaApertura ) ) { horaApertura = "00:00:00"; }
+                }
+
+                using( SqlCommand cmd = new SqlCommand( "SELECT TOP 1 cortezfin as hora_apertura FROM configuracion", connection ) )
+                {
+                    Console.WriteLine( "[" + DateTime.Now + "] Consultando hora de cierre" );
+                    horaCierre = Convert.ToString( cmd.ExecuteScalar() );
+                    Console.WriteLine( "[" + DateTime.Now + "] Hora de cierre obtenida: " + horaCierre );
+                    if( String.IsNullOrEmpty( horaCierre ) ) { horaCierre = "23:59:59"; }
+                }
+            }
+
+            Console.WriteLine( "[" + DateTime.Now + "] Recopilando horario" );
+            Dictionary<string, string> payload = new Dictionary<string, string>(){
+                {"id_empresa", Settings.Value( "Sucursal" )},
+                {"hora_apertura", horaApertura},
+                {"hora_cierre", horaCierre}
+            };
+
+            Console.WriteLine( "[" + DateTime.Now + "] Preparando para envío" );
+            WebClient client = new WebClient();
+            client.Headers.Add( HttpRequestHeader.Authorization, "Bearer " + Security.DecryptString("1234567890123456", Settings.Value( "AuthKey" ) ) );
+            client.Headers.Add( HttpRequestHeader.Accept, "application/json" );
+            client.Headers.Add( "Content-Type", "text/json" );
+
+            try
+            {
+                Console.WriteLine( "[" + DateTime.Now + "] Ejecutando envío" );
+                //Console.WriteLine( "[" + DateTime.Now + "] PAYLOAD: " + System.Text.Json.JsonSerializer.Serialize(payload) );
+                response = client.UploadString( uri, "PUT", System.Text.Json.JsonSerializer.Serialize( payload ) );
+                Console.WriteLine( "[" + DateTime.Now + "] Envío de horarios realizado con éxito." );
+                Environment.Exit(0);
+            }
+            catch( WebException ex )
+            {
+                Console.WriteLine( "[" + DateTime.Now + "] ERROR: No se pudieron establecer los horarios de servicio." );
+                Console.WriteLine( "[" + DateTime.Now + "] ERROR: " + ex.Message);
+                Environment.Exit(0);
+            }
+
         }
 
     }

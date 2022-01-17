@@ -124,7 +124,9 @@ namespace VenkaLite
                     using( StreamWriter w = File.AppendText( @configFile ) )
                     {
                         w.WriteLine( JsonConvert.SerializeObject( settings, Formatting.Indented ) );
+                        // Register the restaurant opening hours to the database.
                     }
+                    LocalData.SetOpeningHours();
                 }
                 catch ( Exception )
                 {
@@ -132,6 +134,7 @@ namespace VenkaLite
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
+
                 
             }
             

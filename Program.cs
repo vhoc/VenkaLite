@@ -8,6 +8,18 @@ namespace VenkaLite
         {
             string queries;
 
+            if( args.Length > 0 && args[0] == "--hours" )
+            {
+                Console.WriteLine( "[" + DateTime.Now + "] Intentando enviar los horarios de la sucursal a la nube." );
+                try {
+                    LocalData.SetOpeningHours();
+                    Console.WriteLine( "[" + DateTime.Now + "] Horarios enviados" );
+                } catch( Exception ex ) {
+                    Console.WriteLine( "[" + DateTime.Now + "] ERROR: " + ex.Message );
+                }
+                
+            }
+
             // Application parameter --config triggers settings prompt.
             if ( args.Length > 0 && args[0] == "--config")
             {

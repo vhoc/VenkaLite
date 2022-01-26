@@ -34,7 +34,7 @@ namespace VenkaLite
             
             // Set configuration file path and file name.
             string configPath = "";
-            string vkconfig = @"vkconfig";
+            string vkconfig = @"vkconfig-demo";
 
             // Validates the operating system in which the application is running and set the configuration file path accordingly.
             // MacOS is not yet supported and will cause the application's termination at this point.
@@ -150,7 +150,7 @@ namespace VenkaLite
         public static string Value( string key )
         {
             string configPath = "";
-            string fileName = @"vkconfig";
+            string fileName = @"vkconfig-demo";
 
             // Validate the configuration file's existence.
             if ( OperatingSystem.IsWindows() ) { configPath = @Environment.GetEnvironmentVariable( "SystemRoot" ) + @"\System32\drivers\etc\"; }
@@ -182,7 +182,7 @@ namespace VenkaLite
         public static bool Check()
         {
             string configPath = "";
-            string vkconfig = @"vkconfig";
+            string vkconfig = @"vkconfig-demo";
 
             if ( OperatingSystem.IsWindows() ) { configPath = @Environment.GetEnvironmentVariable( "SystemRoot" ) + @"\System32\drivers\etc\"; }
             if ( OperatingSystem.IsLinux() ) { configPath = @"/etc/venka/"; }
